@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Claude einrichten · Dein KI-System · LehrConsult</title>
+<style>
+  :root {
+    --coral: #D96548;
+    --coral-light: #F5E1DA;
+    --warm-white: #FAF7F2;
+    --warm-white-2: #F5F1EA;
+    --dark: #1A1A1A;
+    --dark-soft: #3C3C3C;
+    --gray: #8A8A8A;
+    --gray-light: #E5E2DC;
+    --red: #B43E2A;
+    --code-bg: #2A2A2A;
+    --code-text: #E8E5DF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: var(--warm-white);
+    color: var(--dark);
+    line-height: 1.6;
+    padding: 2rem 1rem 4rem;
+  }
+  .container { max-width: 760px; margin: 0 auto; }
+  header { border-bottom: 1px solid var(--gray-light); padding-bottom: 2rem; margin-bottom: 2.5rem; }
+  .eyebrow { color: var(--coral); font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; margin-bottom: 0.8rem; }
+  h1 { font-size: 2.2rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem; letter-spacing: -0.02em; }
+  .meta { color: var(--gray); font-size: 0.95rem; }
+  h2 {
+    font-size: 1.5rem; font-weight: 700; margin-top: 3rem; margin-bottom: 1rem;
+    padding-bottom: 0.5rem; border-bottom: 2px solid var(--coral); display: inline-block;
+    letter-spacing: -0.01em;
+  }
+  h3 { font-size: 1.15rem; font-weight: 600; margin-top: 1.8rem; margin-bottom: 0.6rem; }
+  p { margin-bottom: 1rem; color: var(--dark-soft); }
+  strong { color: var(--dark); font-weight: 600; }
+  ul, ol { margin: 0.6rem 0 1.2rem 1.4rem; color: var(--dark-soft); }
+  ul li, ol li { margin-bottom: 0.4rem; }
+  a { color: var(--coral); word-break: break-word; }
+  code {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    background: var(--warm-white-2);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.88em;
+    color: var(--dark);
+  }
+  pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 1.2rem 6.5rem 1.2rem 1.4rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1.2rem 0;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    position: relative;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+  .callout {
+    background: var(--coral-light);
+    border-left: 4px solid var(--coral);
+    padding: 1.2rem 1.4rem;
+    margin: 1.5rem 0;
+    border-radius: 4px;
+  }
+  .callout strong { color: var(--coral); }
+  .warning {
+    background: white;
+    border-left: 4px solid var(--red);
+    padding: 1rem 1.2rem;
+    margin: 1.2rem 0;
+    border-radius: 4px;
+  }
+  .warning strong { color: var(--red); }
+  .tabu {
+    background: white;
+    border: 1px solid var(--gray-light);
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.6rem;
+    border-radius: 4px;
+    border-left: 4px solid var(--red);
+  }
+  .tabu strong { color: var(--red); }
+  .toc {
+    background: var(--warm-white-2);
+    padding: 1.2rem 1.5rem;
+    border-radius: 6px;
+    margin: 1.5rem 0 2rem;
+  }
+  .toc h3 { margin-top: 0; }
+  .toc ol { margin-bottom: 0; }
+  .toc a { color: var(--dark-soft); text-decoration: none; display: inline-block; padding: 0.2rem 0; }
+  .toc a:hover { color: var(--coral); }
+  .steps { counter-reset: step; margin: 1.4rem 0; }
+  .step {
+    background: white;
+    padding: 1.2rem 1.4rem 1.2rem 3.6rem;
+    margin-bottom: 0.8rem;
+    border-radius: 6px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .step::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 1rem;
+    top: 1.2rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    background: var(--coral);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .step h3 { margin-top: 0; }
+  .shot { margin: 1rem 0 0.9rem; }
+  .shot img { display: block; width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--gray-light); }
+  .shot.schmal img { max-width: 300px; }
+  .shot figcaption { font-size: 0.88rem; line-height: 1.55; color: var(--dark-soft); margin-top: 0.5rem; }
+  .shot .nr { display: inline-flex; align-items: center; justify-content: center; width: 1.4em; height: 1.4em; border-radius: 50%; background: var(--coral); color: #fff; font-weight: 700; font-size: 0.82em; margin-right: 0.3em; }
+  footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--gray-light);
+    font-size: 0.85rem;
+    color: var(--gray);
+    text-align: center;
+  }
+  .signature { margin-top: 2rem; font-size: 1rem; color: var(--dark); }
+  .signature .name { color: var(--coral); font-weight: 600; }
+
+  .btn {
+    display: inline-block;
+    background: var(--coral);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .btn:hover { background: #C25538; }
+  .copy-btn {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    background: rgba(255,255,255,0.12);
+    color: var(--code-text);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 4px;
+    padding: 0.25rem 0.7rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.22); }
+
+  /* OS-Umschalter */
+  .os-switch {
+    display: flex;
+    gap: 0.5rem;
+    background: var(--warm-white-2);
+    padding: 0.4rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    position: sticky;
+    top: 0.5rem;
+    z-index: 10;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .os-switch button {
+    flex: 1;
+    padding: 0.55rem 1rem;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--gray);
+    cursor: pointer;
+    font-family: inherit;
+  }
+  body.os-win .os-switch .btn-win,
+  body.os-mac .os-switch .btn-mac { background: var(--coral); color: white; }
+  .mac-only, .win-only { display: none; }
+  body.os-win .win-only { display: block; }
+  body.os-mac .mac-only { display: block; }
+  span.mac-only, span.win-only { display: none; }
+  body.os-win span.win-only { display: inline; }
+  body.os-mac span.mac-only { display: inline; }
+
+  /* System-Schaubild */
+  .sys {
+    background: white;
+    border-radius: 12px;
+    padding: 1.6rem 1.4rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    margin: 1.6rem 0 2rem;
+  }
+  .sys-bench {
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gray);
+    border: 1px dashed var(--gray-light);
+    border-radius: 8px;
+    padding: 0.5rem 0.8rem 1.2rem;
+  }
+  .sys-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+    margin-top: 0.8rem;
+  }
+  .sys-card {
+    background: var(--warm-white);
+    border: 1px solid var(--gray-light);
+    border-radius: 10px;
+    padding: 1rem 0.9rem;
+    text-align: center;
+    transition: transform 0.25s, box-shadow 0.25s;
+    text-transform: none;
+    letter-spacing: normal;
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--dark);
+  }
+  .sys-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+  .sys-card .ico { font-size: 1.6rem; display: block; margin-bottom: 0.4rem; animation: sysfloat 6s ease-in-out infinite; }
+  .sys-card:nth-child(2) .ico { animation-delay: 2s; }
+  .sys-card:nth-child(3) .ico { animation-delay: 4s; }
+  .sys-card h4 { margin: 0 0 0.1rem; font-size: 0.98rem; }
+  .sys-card .sub { color: var(--coral); font-size: 0.78rem; font-weight: 600; display: block; margin-bottom: 0.4rem; }
+  .sys-card p { font-size: 0.85rem; margin: 0; color: var(--dark-soft); line-height: 1.45; }
+  @keyframes sysfloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  .sys-flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    margin: 1.4rem 0 0.4rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--gray-light);
+  }
+  .sys-step {
+    background: var(--warm-white-2);
+    border-radius: 999px;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--dark-soft);
+    white-space: nowrap;
+  }
+  .sys-step.hot { background: var(--coral); color: white; }
+  .sys-arrow { color: var(--coral); font-weight: 700; }
+  .sys-loop { text-align: center; font-size: 0.82rem; color: var(--gray); margin-top: 0.5rem; }
+  .sys-value {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+    margin-top: 1.3rem;
+  }
+  .sys-value div {
+    background: var(--coral-light);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.85rem;
+    color: var(--dark-soft);
+    line-height: 1.45;
+  }
+  .sys-value strong { display: block; color: var(--coral); margin-bottom: 0.15rem; }
+  .sys-punch { text-align: center; font-weight: 600; margin-top: 1.2rem; font-size: 1rem; color: var(--dark); }
+
+  /* Etappen */
+  .etappen { margin: 2rem 0 0.5rem; }
+  .etappe {
+    position: relative;
+    padding: 0 0 1.7rem 5.6rem;
+    margin: 0 0 1.7rem 0;
+    border-bottom: 1px solid var(--gray-light);
+  }
+  .etappe:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+  .etappe::before {
+    content: "Etappe " attr(data-nr);
+    position: absolute;
+    left: 0; top: 0.2rem;
+    background: var(--coral);
+    color: #fff;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.22rem 0.5rem;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .etappe h3 { margin: 0 0 0.55rem 0; padding-top: 0.1rem; font-size: 1.12rem; color: var(--dark); }
+  .etappe > p { margin: 0 0 0.7rem 0; }
+  .etappe .ez {
+    margin: 0 0 0.35rem 0;
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--coral-light);
+    font-size: 0.94rem;
+    color: var(--dark-soft);
+  }
+  .etappe .ez:last-child { margin-bottom: 0; }
+  @media (max-width: 720px) { .etappe { padding-left: 0; padding-top: 2.1rem; } }
+
+  /* Prompt-Karten */
+  .pcase { margin: 1.6rem 0 1.9rem; }
+  .pcase h4 { margin: 0 0 0.35rem; font-size: 1.02rem; }
+  .pcase h4 .pnum {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.8rem; color: var(--coral); margin-right: 0.45rem;
+  }
+  .pcase .nutzen {
+    margin: 0 0 0.65rem; font-size: 0.88rem; color: var(--dark-soft); line-height: 1.5;
+    border-left: 3px solid var(--coral-light); padding-left: 0.75rem;
+  }
+  .pcase .nutzen b { color: var(--coral); font-weight: 700; }
+  .pcase pre { margin-top: 0; }
+
+  /* Befehls-Karten */
+  .cmd-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+    margin: 1.2rem 0;
+  }
+  .cmd-card {
+    background: white;
+    border: 1px solid #e5e0da;
+    border-top: 3px solid var(--coral);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+  }
+  .cmd-card h4 { margin: 0 0 0.5rem; font-size: 1rem; }
+  .cmd-card h4 code { font-size: 0.95rem; }
+  .cmd-card h4 .cmd-nick { color: var(--gray); font-weight: 400; font-size: 0.82rem; }
+  .cmd-card dl { margin: 0; }
+  .cmd-card dt {
+    color: var(--coral);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+  }
+  .cmd-card dt:first-child { margin-top: 0; }
+  .cmd-card dd { margin: 0.1rem 0 0; font-size: 0.85rem; color: var(--dark-soft); line-height: 1.45; }
+  @media (max-width: 600px) {
+    .sys-cards, .sys-value, .cmd-grid { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sys-card .ico { animation: none; }
+    .sys-card, .sys-card:hover { transition: none; transform: none; }
+  }
+
+  /* Passwort-Gate */
+  #gate {
+    position: fixed;
+    inset: 0;
+    background: var(--warm-white);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  #gate .gate-box {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 2.5rem 2rem;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+  }
+  #gate h2 { border: none; display: block; margin: 0 0 0.5rem; font-size: 1.3rem; }
+  #gate p { font-size: 0.92rem; }
+  #gate input {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--gray-light);
+    border-radius: 6px;
+    font-size: 1rem;
+    margin: 0.8rem 0;
+    font-family: inherit;
+  }
+  #gate .gate-error { color: var(--red); font-size: 0.85rem; min-height: 1.2rem; margin-bottom: 0.4rem; }
+  #content { display: none; }
+  body.unlocked #content { display: block; }
+  body.unlocked #gate { display: none; }
+
+  /* Seiten-Navigation links */
+  #sidenav { display: none; }
+  @media (min-width: 1240px) {
+    body.unlocked #sidenav {
+      display: block;
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      left: max(1.5rem, calc(50% - 610px));
+      width: 200px;
+      z-index: 20;
+    }
+    #sidenav .navlabel {
+      font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gray); font-weight: 600; margin-bottom: 0.7rem; padding-left: 0.85rem;
+    }
+    #sidenav ol { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--gray-light); }
+    #sidenav li { margin: 0; }
+    #sidenav a {
+      display: block; padding: 0.32rem 0 0.32rem 0.85rem; margin-left: -2px;
+      border-left: 2px solid transparent; font-size: 0.82rem; line-height: 1.35;
+      color: var(--gray); text-decoration: none;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+    #sidenav a:hover { color: var(--dark); }
+    #sidenav a .n { display: inline-block; width: 1.5em; white-space: nowrap; color: var(--gray-light); font-variant-numeric: tabular-nums; }
+    #sidenav a.active { color: var(--coral); border-left-color: var(--coral); font-weight: 600; }
+    #sidenav a.active .n { color: var(--coral); }
+  }
+
+  /* Urheberrechts-Notice */
+  .notice {
+    margin-top: 3rem;
+    border-left: 3px solid var(--coral);
+    padding: 1rem 1.2rem;
+    background: var(--warm-white-2);
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: var(--gray);
+  }
+  .notice strong { color: var(--dark-soft); display: block; margin-bottom: 0.35rem; }
+
+  @media (prefers-reduced-motion: reduce) { #sidenav a { transition: none; } }
+  @media (max-width: 600px) {
+    h1 { font-size: 1.7rem; }
+    body { padding: 1rem 0.8rem 3rem; }
+    pre { font-size: 0.78rem; padding: 0.9rem 1rem; padding-right: 5.5rem; }
+  }
+
+  /* PDF-Leiste */
+  .pdf-row { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .btn-pdf::before { content: "⤓ "; }
+  .pdf-hint { font-size: 0.85rem; color: var(--gray); }
+
+  /* Druck und PDF-Export */
+  @media print {
+    @page { size: A4; margin: 15mm 13mm; }
+    body { padding: 0; background: white; font-size: 10.5pt; }
+    .container { max-width: 100%; padding: 0; }
+    #sidenav, .pdf-row, .os-switch, .copy-btn, #gate { display: none !important; }
+    #content { display: block !important; }
+    a { color: var(--dark); text-decoration: none; }
+    a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.72em; color: var(--gray); word-break: break-all; }
+    pre, code { white-space: pre-wrap !important; word-break: break-word; }
+    pre { font-size: 8.6pt; padding-right: 1rem; }
+    h1, h2, h3 { break-after: avoid; }
+    .callout, .tabu, .warning, .sys-card, .signature, .notice, .pcase, .etappe, .cmd-card, .shot { break-inside: avoid; }
+    .shot img { max-width: 78%; }
+    .shot.schmal img { max-width: 34%; }
+    .notice { border-left-color: #999; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  }
+  table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1.4rem; font-size: 0.95rem; background: #fff; border: 1px solid var(--gray-light); }
+  th { text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray); padding: 10px 12px; border-bottom: 2px solid var(--gray-light); }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--gray-light); vertical-align: top; color: var(--dark-soft); }
+  tr:last-child td { border-bottom: 0; }
+  details { border-bottom: 1px solid var(--gray-light); padding: 10px 0; }
+  summary { cursor: pointer; font-weight: 600; color: var(--dark); }
+  details p { margin: 0.5rem 0 0; font-size: 0.95rem; }
+  .spicker { background: #fff; border: 2px solid var(--coral); border-radius: 14px; padding: 22px 24px 10px; margin-top: 1.4rem; }
+  .spicker h2 { margin-top: 0; }
+  .spicker h3 { margin-top: 1.4rem; color: var(--coral); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  footer { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--gray-light); color: var(--gray); font-size: 0.85rem; }
+  .urheber { font-size: 0.78rem; color: var(--gray); margin-top: 2rem; }
+  .urheber p { color: var(--gray); font-size: 0.78rem; margin-bottom: 0.4rem; }
+  /* Zeitstrahl oben */
+  nav.plan { background: #fff; border: 1px solid var(--gray-light); border-radius: 14px; padding: 18px 22px; margin: 0 0 2.5rem; }
+  nav.plan h2 { font-size: 15px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray); margin: 0 0 10px; padding: 0; border: 0; display: block; }
+  nav.plan .hint { font-size: 0.82rem; color: var(--gray); margin: 0 0 8px; }
+  nav.plan ol { margin: 0; padding: 0; list-style: none; }
+  nav.plan li { display: flex; gap: 14px; padding: 6px 0; margin: 0; border-top: 1px solid var(--gray-light); }
+  nav.plan li:first-child { border-top: 0; }
+  nav.plan time { min-width: 110px; color: var(--coral); font-weight: 600; font-variant-numeric: tabular-nums; }
+  nav.plan a { color: var(--dark); text-decoration: none; }
+  nav.plan a:hover { text-decoration: underline; }
+  @media (max-width: 560px) { nav.plan time { min-width: 90px; } }
+  body.tool-app .os-switch { display: none; }
+</style>
+</head>
+
+<body class="os-win tool-{{TOOL}}">
+
+<div id="gate">
+  <div class="gate-box">
+    <div class="eyebrow">LehrConsult · Setup-Session</div>
+    <h2>Geschützter Bereich</h2>
+    <p>Bitte gib das Passwort aus der Einladung ein.</p>
+    <input type="password" id="gate-pw" placeholder="Passwort" autocomplete="off">
+    <div class="gate-error" id="gate-error"></div>
+    <button class="btn" id="gate-btn" type="button">Öffnen</button>
+  </div>
+</div>
+
+<div id="content">
+
+<nav id="sidenav" aria-label="Abschnitte">
+  <div class="navlabel">Inhalt</div>
+  <ol>
+<!--NAV-->
+  </ol>
+</nav>
+
+
+<div class="container">
+
+<header>
+  <div class="eyebrow">Praxisanleitung · Stand {{STAND}}</div>
+  <h1>Dein Claude-Setup, {{KUNDE}}</h1>
+  <p class="meta">Deine Anleitung für unsere Session am {{TERMIN_DATUM}}. Wir gehen alle Schritte gemeinsam durch, in deinem Tempo. Ganz unten steht dein Spicker für den Alltag.</p>
+  <div class="pdf-row">
+    <button class="btn btn-pdf" type="button" onclick="window.print()">Als PDF speichern</button>
+    <span class="pdf-hint">Im Druckfenster als Ziel <strong>„Als PDF sichern“</strong> wählen.<!--TOOL:code--> Wähl vorher unten dein Betriebssystem, dann steht im PDF die passende Anleitung.<!--/TOOL--></span>
+  </div>
+</header>
+
+<nav class="plan">
+  <h2>Ablauf</h2>
+  <p class="hint">{{ZEITHINWEIS}}</p>
+  <ol>
+    <li><time>{{ZEIT_1}}</time><a href="#schritte">Ankommen und einrichten: Konto, Programme, Ordner</a></li>
+    <li><time>{{ZEIT_2}}</time><a href="#schritte">Setup-Datei und Einzeiler</a></li>
+    <li><time>{{ZEIT_3}}</time><a href="#handbuch">Als Erstes: deine CLAUDE.md und die Ordner</a></li>
+    <li><time>{{ZEIT_4}}</time><a href="#ordner">Second Brain, Interview, Befehle</a></li>
+    <li><time>{{ZEIT_5}}</time><a href="#befehle">Befehle und monatliche Prüfung als Automation</a></li>
+    <li><time>{{ZEIT_6}}</time><a href="#etappen">Neustart und Kontrolle</a></li>
+    <li><time>{{ZEIT_7}}</time><a href="#spicker">Dein Spicker und Fragen</a></li>
+  </ol>
+</nav>
+
+
+<section>
+<p>Im Chat mit Claude fängst du jedes Mal von vorn an: erklären, wer du bist, was du anbietest, wie du schreibst. Ab jetzt geht das anders. Claude arbeitet direkt in einem Ordner auf deinem Rechner. Dort liegt, wer du bist, woran du baust und wie du arbeitest, und Claude liest es bei jedem Start von selbst mit. Du erklärst dich einmal, danach nicht mehr.</p>
+
+<div class="callout">
+<p style="margin-bottom:0;"><strong>Der wichtigste Satz vorweg:</strong> Wenn du nicht weiterweißt, frag Claude selbst. Er wird nie ungeduldig, und durch eine Frage kannst du nichts kaputt machen. Zum Beispiel: „Erklär mir das bitte so, als hätte ich das noch nie gemacht.“</p>
+</div>
+</section>
+
+
+<!--OPT:einleitung-->
+<section>
+<!-- PERSONALISIEREN:WOFUER Aus dem Kundenprofil füllen: {{WOFUER_EINSTIEG}} = zwei bis drei Sätze zu ihren Werkzeugen und ihrem Kernproblem, möglichst in ihren eigenen Worten. {{BEISPIEL_AUFGABEN}} = zwei bis drei ihrer echten Aufgaben oder Projekte. Punkte dürfen auf ihre Wünsche zugeschnitten oder ergänzt werden, höchstens fünf. Keine erfundenen Zahlen. Kommentar danach löschen. -->
+<h2 id="wofuer" data-nav="Wofür wir das machen">{{N}} · Wofür wir das machen</h2>
+<p>{{WOFUER_EINSTIEG}}</p>
+<p>Das Setup gibt Claude eine feste Zentrale auf deinem Rechner. Dort steht einmal sauber aufgeschrieben, wer du bist, was du anbietest und wie du klingst. Von dort aus arbeitet Claude bei jeder Aufgabe.</p>
+<ul>
+<li><strong>Du erklärst dich nur einmal.</strong> Angebot, Zielgruppe und deine Regeln stehen im Handbuch. Jede Sitzung startet mit diesem Wissen, egal ob es um {{BEISPIEL_AUFGABEN}} geht.</li>
+<li><strong>Deine Ideen gehen nicht mehr verloren.</strong> Was dir unterwegs einfällt, landet im Eingangskorb und wird später einsortiert. So wächst ein Vorrat, auf den Claude bei jeder Aufgabe zurückgreift.</li>
+<li><strong>Ergebnisse liegen als Dateien bei dir.</strong> Texte, Listen und Unterlagen liegen sortiert in deinem Ordner. Du suchst nichts mehr in alten Chatverläufen.</li>
+<li><strong>Das Wissen gehört dir.</strong> Alles liegt auf deiner Festplatte und hängt an keinem Konto. Wechselst du einmal das Werkzeug, nimmst du den Ordner einfach mit.</li>
+</ul>
+<p>Die Zeit heute ist die Investition. Danach fängst du bei keiner Aufgabe mehr bei null an, und dein System weiß jede Woche ein Stück mehr über deine Arbeit.</p>
+
+<h2 id="system">Dein System auf einen Blick</h2>
+<p>Stell dir vor, du stellst gerade eine Mitarbeiterin ein. Sie braucht einen Arbeitsplatz, ein Handbuch und ein Gedächtnis. Genau das bauen wir: drei Bausteine in einem Ordner, und Claude nutzt alle drei bei jeder Aufgabe automatisch.</p>
+
+<div class="sys">
+  <div class="sys-bench">Der Arbeitsplatz · dein Ordner KI-System
+    <div class="sys-cards">
+      <div class="sys-card">
+        <span class="ico">📘</span>
+        <h4>Das Handbuch</h4>
+        <span class="sub">Briefing · entsteht im Interview</span>
+        <p>Wer du bist, für wen du arbeitest, wie Claude arbeiten soll. Claude liest es bei jedem Start.</p>
+      </div>
+      <div class="sys-card">
+        <span class="ico">📓</span>
+        <h4>Das Notizbuch</h4>
+        <span class="sub">Gedächtnis · Claude schreibt es</span>
+        <p>Was Claude nebenbei lernt. Das eingebaute Auto-Memory sammelt es im Ordner <code>memory</code> neben deinem Second Brain. Sachwissen daraus wandert mit <code>/verarbeiten</code> in den Aktenschrank, im Notizbuch bleiben deine Vorlieben und ein Verweis. Dort kannst du jederzeit nachlesen, was Claude sich gemerkt hat.</p>
+      </div>
+      <div class="sys-card">
+        <span class="ico">🗄️</span>
+        <h4>Der Aktenschrank</h4>
+        <span class="sub">Second Brain · dein Fachwissen</span>
+        <p>Deine Angebote, Abläufe, Vorlagen. Jede Aussage mit Quellverweis, nichts wird erfunden.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sys-flow">
+    <span class="sys-step">Du gibst einen Auftrag</span>
+    <span class="sys-arrow">→</span>
+    <span class="sys-step">Claude liest Handbuch und Wissen</span>
+    <span class="sys-arrow">→</span>
+    <span class="sys-step">arbeitet in deinen Dateien</span>
+    <span class="sys-arrow">→</span>
+    <span class="sys-step">Ergebnis liegt als Datei da</span>
+    <span class="sys-arrow">→</span>
+    <span class="sys-step hot">Gedächtnis sammelt, Second Brain behält</span>
+  </div>
+  <div class="sys-loop">↻ und die nächste Sitzung startet schlauer als die letzte</div>
+
+  <div class="sys-value">
+    <div><strong>Kennt dich</strong>Dein Angebot, deine Kundschaft und dein Ton laufen bei jedem Auftrag mit.</div>
+    <div><strong>Vergisst nichts</strong>Was du einmal erklärt hast, bleibt. Kein Hin- und Herkopieren, kein Neuanfang pro Gespräch.</div>
+    <div><strong>Ergebnisse als Dateien</strong>Unterlagen, Infoblätter und Texte liegen in deinem Ordner und gehen in keinem Chatverlauf verloren.</div>
+  </div>
+  <p class="sys-punch">Der Chat beantwortet Fragen. Dieses System erledigt Arbeit und wird dabei jede Woche besser.</p>
+</div>
+</section>
+
+<!--/OPT-->
+
+<section>
+<h2 id="schritte" data-nav="Die Schritte">{{N}} · Die Schritte</h2>
+<p>Die ersten Schritte kannst du schon vor der Session erledigen, wenn du magst. Wenn nicht, machen wir sie gemeinsam.</p>
+
+<!--TOOL:code-->
+<p>Wähl jetzt dein Betriebssystem, dann passt sich die Anleitung automatisch an.</p>
+
+<div class="os-switch">
+  <button class="btn-win" type="button" onclick="setOS('win')">Windows</button>
+  <button class="btn-mac" type="button" onclick="setOS('mac')">Mac</button>
+</div>
+<!--/TOOL-->
+
+<div class="steps">
+
+<div class="step">
+<h3>Dein Claude-Konto braucht einen Bezahlplan</h3>
+<p>Für Claude Code reicht das kostenlose Konto nicht, mit ihm lässt es sich nicht anmelden.</p>
+<ul>
+<li>Melde dich auf <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> an und schau unter <strong>Einstellungen</strong> nach, welchen Plan du hast.</li>
+<li>Steht dort <strong>Free</strong>: auf den <strong>Pro-Plan</strong> wechseln. Der ist der richtige Einstieg. Chat und Claude Code teilen sich sein Kontingent, an einem sehr intensiven Tag kann es also knapp werden. Dann hilft eine Pause.</li>
+</ul>
+<!--TOOL:code-->
+<figure class="shot">
+<img src="bilder/schritt1-plan.png" width="1400" height="622" alt="Preisseite von Claude mit den Plänen Free, Pro und Max, der Pro-Plan ist markiert" loading="lazy">
+<figcaption>So sieht die Preisseite von Claude aus (Stand 02.10.2026). <span class="nr">1</span> Pro ist der Plan, den du für die Session brauchst.</figcaption>
+</figure>
+<!--/TOOL-->
+</div>
+
+<!--TOOL:code-->
+<div class="step">
+<h3>VS Code installieren</h3>
+<p>VS Code ist das kostenlose Programm, in dem Claude Code läuft. Stell es dir als Arbeitsplatz vor.</p>
+<div class="win-only">
+<ul>
+<li>Download: <a href="https://code.visualstudio.com/download" target="_blank" rel="noopener">code.visualstudio.com/download</a>, dort den blauen <strong>Windows</strong>-Button klicken.</li>
+<li>Die heruntergeladene Datei ausführen und den Installer mit den Standardeinstellungen durchklicken.</li>
+<li>VS Code starten. Die Willkommens-Tour kannst du schließen.</li>
+<li><strong>Gleich jetzt:</strong> Rechtsklick auf das VS-Code-Symbol unten in der Taskleiste, dann <strong>An Taskleiste anheften</strong>. So findest du das Programm immer wieder.</li>
+</ul>
+</div>
+<div class="mac-only">
+<ul>
+<li>Download: <a href="https://code.visualstudio.com/download" target="_blank" rel="noopener">code.visualstudio.com/download</a>, dort den <strong>Mac</strong>-Button klicken.</li>
+<li>Die ZIP-Datei im Downloads-Ordner doppelklicken, dann das Programm <strong>Visual Studio Code</strong> in den Ordner <strong>Programme</strong> ziehen.</li>
+<li>VS Code starten. Die Willkommens-Tour kannst du schließen.</li>
+<li><strong>Gleich jetzt:</strong> Rechtsklick auf das VS-Code-Symbol unten im Dock, dann <strong>Optionen &gt; Im Dock behalten</strong>. So findest du das Programm immer wieder.</li>
+</ul>
+</div>
+<p>So sieht VS Code aus, wenn es offen ist. Die drei markierten Stellen brauchst du in den nächsten Schritten:</p>
+<figure class="shot">
+<img src="bilder/schritt2-ueberblick.png" width="1400" height="988" alt="Fenster von VS Code mit drei Markierungen: Erweiterungen-Symbol, Claude-Symbol und Terminal" loading="lazy">
+<figcaption><span class="nr">1</span> Erweiterungen-Symbol, das brauchst du in Schritt 3. <span class="nr">2</span> Claude-Symbol, es erscheint erst nach Schritt 3 und öffnet in Schritt 7 das Chat-Fenster. <span class="nr">3</span> Terminal, das kommt in Schritt 5 dran. Bei dir stehen links weniger Symbole als bei mir, das passt so. Das Bild stammt vom Mac, auf Windows sieht das Fenster innen genauso aus.</figcaption>
+</figure>
+<div class="callout mac-only" style="margin-bottom:0;">
+<p style="margin-bottom:0;"><strong>Warum das mit dem Dock wichtig ist:</strong> Die Spotlight-Suche (Cmd + Leertaste) findet ein frisch installiertes Programm oft noch nicht und zeigt dann nur Treffer aus dem Internet. Wenn du VS Code trotzdem einmal suchst: <strong>Finder öffnen &gt; links unter Favoriten auf Programme &gt; in der Liste zu Visual Studio Code</strong>.</p>
+</div>
+</div>
+
+<div class="step">
+<h3>Claude-Code-Erweiterung installieren</h3>
+<ul>
+<li>In VS Code links auf das <strong>Erweiterungen-Symbol</strong> klicken (vier kleine Quadrate).</li>
+<li>Oben ins Suchfeld <code>Claude Code</code> eintippen.</li>
+<li>Den Eintrag von <strong>Anthropic</strong> auswählen und auf <strong>Install</strong> klicken. (Direktlink: <a href="https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code" target="_blank" rel="noopener">Claude Code im Marketplace</a>)</li>
+</ul>
+<figure class="shot">
+<img src="bilder/schritt3-suche.png" width="1400" height="906" alt="Erweiterungen in VS Code: Suchfeld mit dem Text claude code und der Eintrag von Anthropic" loading="lazy">
+<figcaption><span class="nr">1</span> Erweiterungen-Symbol. <span class="nr">2</span> Suchfeld. <span class="nr">3</span> Der richtige Eintrag: Claude Code for VS Code von Anthropic. Darunter stehen Erweiterungen anderer Anbieter mit ähnlichem Namen, die lässt du liegen.</figcaption>
+</figure>
+<figure class="shot">
+<img src="bilder/schritt3-anthropic.png" width="1400" height="387" alt="Detailseite der Erweiterung Claude Code for VS Code mit dem Herausgeber Anthropic" loading="lazy">
+<figcaption><span class="nr">1</span> Prüf den Herausgeber: Anthropic mit dem blauen Haken. <span class="nr">2</span> An dieser Stelle steht bei dir der blaue Knopf <strong>Install</strong>. Bei mir ist die Erweiterung schon installiert, deshalb steht dort etwas anderes.</figcaption>
+</figure>
+</div>
+
+<div class="step">
+<h3>Arbeitsordner anlegen und öffnen</h3>
+<ul>
+<li>Leg einen neuen Ordner mit dem Namen <strong>KI-System</strong> an, zum Beispiel <span class="win-only">in deinen Dokumenten</span><span class="mac-only">auf dem Schreibtisch</span>.</li>
+<li>In VS Code: <span class="win-only"><strong>Datei &gt; Ordner öffnen</strong></span><span class="mac-only"><strong>File &gt; Open Folder</strong> (bzw. Ablage &gt; Ordner öffnen)</span> und den Ordner KI-System auswählen.</li>
+<li>Wenn VS Code fragt, ob du den Autoren vertraust: <strong>Ja, ich vertraue den Autoren</strong>. Es ist dein eigener Ordner.</li>
+</ul>
+<figure class="shot schmal">
+<img src="bilder/schritt4-menue.png" width="614" height="1178" alt="Menü File in VS Code, der Punkt Open Folder ist markiert" loading="lazy">
+<figcaption><span class="nr">1</span> File. <span class="nr">2</span> Open Folder. In der deutschen Fassung von VS Code heißen die beiden Punkte Datei und Ordner öffnen.</figcaption>
+</figure>
+<figure class="shot mac-only">
+<img src="bilder/schritt4-ordner.png" width="1400" height="833" alt="Dialog zum Öffnen eines Ordners am Mac mit dem Ordner KI-System" loading="lazy">
+<figcaption><span class="nr">1</span> Oben steht der Ordner, den du öffnest: KI-System. <span class="nr">2</span> Gibt es ihn noch nicht, legst du ihn mit „Neuer Ordner“ gleich hier an. <span class="nr">3</span> Mit „Öffnen“ bestätigst du.</figcaption>
+</figure>
+<div class="callout" style="margin-bottom:0;">
+<p style="margin-bottom:0;"><strong>Merksatz:</strong> Ab jetzt immer genau diesen Ordner öffnen. Dein Second Brain und Claudes Gedächtnis liegen in diesem Ordner. Wer jedes Mal woanders arbeitet, fängt jedes Mal bei null an.</p>
+</div>
+</div>
+
+<div class="step">
+<h3>Claude einmal im Terminal einrichten</h3>
+<p>Die Erweiterung bringt Claude für das Chat-Fenster mit. Das Terminal, also das Fenster für Textbefehle, kennt Claude danach noch nicht. Ein paar Dinge richtest du nur dort ein, zum Beispiel Zusatzprogramme (Plugins) oder die Verbindung zu anderen Programmen. Deshalb machen wir das einmal jetzt, danach brauchst du das Terminal kaum noch.</p>
+<ul>
+<li>In VS Code oben im Menü auf <strong>Terminal &gt; New Terminal</strong> klicken. Unten öffnet sich ein Bereich mit einer blinkenden Zeile.</li>
+<li>Kopier diesen Befehl, füg ihn dort ein<span class="mac-only"> (Cmd + V)</span><span class="win-only"> (Strg + V)</span> und drück Enter:</li>
+</ul>
+<div class="mac-only">
+<pre id="cli-install-mac"><code>curl -fsSL https://claude.ai/install.sh | bash</code><button class="copy-btn" type="button" onclick="copyBlock('cli-install-mac', this)">Kopieren</button></pre>
+<figure class="shot">
+<img src="bilder/schritt5-terminal.png" width="1400" height="267" alt="Terminal unten in VS Code mit dem eingefügten Installationsbefehl" loading="lazy">
+<figcaption><span class="nr">1</span> Der Reiter Terminal unten in VS Code. <span class="nr">2</span> Hier steht der eingefügte Befehl. Danach drückst du Enter.</figcaption>
+</figure>
+</div>
+<div class="win-only">
+<pre id="cli-install-win"><code>irm https://claude.ai/install.ps1 | iex</code><button class="copy-btn" type="button" onclick="copyBlock('cli-install-win', this)">Kopieren</button></pre>
+</div>
+<p>Die Installation dauert ein, zwei Minuten. Warte, bis wieder eine leere Zeile mit blinkendem Strich erscheint.</p>
+<div class="callout">
+<p style="margin-bottom:0.4rem;"><strong>Der wichtigste Moment in diesem Schritt:</strong> Am Ende steht oft ein Hinweis, dass ein Ordner <em>„not in your PATH“</em> ist, und darunter ein Befehl. Kopier genau diesen Befehl, füg ihn ein und drück Enter. Ohne ihn findet dein Rechner Claude im Terminal nicht, obwohl es installiert ist.</p>
+<div class="mac-only">
+<p style="margin-bottom:0.4rem;">Auf dem Mac sieht er so aus:</p>
+<pre id="cli-path-mac"><code>echo 'export PATH="$HOME/.local/bin:$PATH"' &gt;&gt; ~/.zshrc &amp;&amp; source ~/.zshrc</code><button class="copy-btn" type="button" onclick="copyBlock('cli-path-mac', this)">Kopieren</button></pre>
+</div>
+<div class="win-only">
+<p style="margin-bottom:0.4rem;">Unter Windows nimmst du diese zwei Zeilen, aber nur, wenn der Hinweis erscheint:</p>
+<pre id="cli-path-win"><code>$currentPath = [Environment]::GetEnvironmentVariable('PATH', 'User')
+[Environment]::SetEnvironmentVariable('PATH', "$currentPath;$env:USERPROFILE\.local\bin", 'User')</code><button class="copy-btn" type="button" onclick="copyBlock('cli-path-win', this)">Kopieren</button></pre>
+</div>
+</div>
+<ul>
+<li>Schließ das Terminal über das <strong>Mülleimer-Symbol</strong> rechts oben im Terminal-Bereich und öffne über <strong>Terminal &gt; New Terminal</strong> ein neues.</li>
+<li>Tipp <code>claude --version</code> und drück Enter. Erscheint eine Versionsnummer, hat alles geklappt. Steht dort „command not found“, fehlt der Befehl aus dem Kasten.</li>
+<li>Tipp jetzt <code>claude</code> und drück Enter. Du bewegst dich mit den Pfeiltasten und bestätigst mit Enter:
+<ul>
+<li>Farbe: hell oder dunkel, ganz wie du magst</li>
+<li>Anmeldung: <strong>Claude account with subscription</strong>, der Browser öffnet sich kurz</li>
+<li>Ordner: <strong>Yes, I trust this folder</strong></li>
+<li>Kommt eine Frage nach Chrome: <strong>No, not now</strong></li>
+</ul>
+</li>
+<li>Fliegst du dabei aus Versehen raus, tipp einfach noch einmal <code>claude</code>.</li>
+<li>Zum Schluss <code>/exit</code> eintippen und das Terminal schließen. Ab hier arbeitest du wieder im Chat-Fenster.</li>
+</ul>
+</div>
+
+<div class="step">
+<h3>Die Setup-Datei in den Ordner legen</h3>
+<ul>
+<li>Lade die Datei herunter: <a class="btn" href="setup-{{KUNDE}}.md" download style="margin: 0.3rem 0;">setup-{{KUNDE}}.md herunterladen</a></li>
+<li>Verschieb sie aus dem Downloads-Ordner in deinen Ordner <strong>KI-System</strong>.</li>
+<li>Falls der Klick die Datei nur im Browser anzeigt: Rechtsklick auf den Button, dann <span class="win-only">„Link speichern unter“</span><span class="mac-only">„Verknüpfte Datei laden unter“</span> wählen.</li>
+<li>Hast du sie zweimal heruntergeladen, heißt die zweite Kopie <code>setup-{{KUNDE}} (1).md</code>. Lösch dann die ältere, damit nur eine im Ordner liegt.</li>
+</ul>
+<p style="margin-bottom:0;">In dieser Datei steckt die komplette Bauanleitung für dein System. Claude arbeitet sie Schritt für Schritt ab, du beantwortest Fragen und gibst frei.</p>
+</div>
+
+<div class="step">
+<h3>Claude starten und den Einzeiler abschicken</h3>
+<ul>
+<li>Klick in VS Code in der <strong>linken Symbolleiste</strong> auf das <strong>Claude-Symbol (✱)</strong>, im Bild bei Schritt 2 die Nummer 2. Zuerst öffnet sich eine Liste deiner Sitzungen, die ist beim ersten Mal leer.</li>
+<li>Starte dort eine <strong>neue Sitzung</strong>. Jetzt erst erscheint das Chat-Fenster.</li>
+<li>Melde dich mit deinem <strong>eigenen</strong> Konto an, dabei öffnet sich kurz der Browser.</li>
+<li>Kopier diesen Satz und schick ihn ab:</li>
+</ul>
+<pre id="prompt-setup"><code>Lies die Datei setup-{{KUNDE}}.md in diesem Ordner und arbeite sie der Reihe nach ab, beginnend mit Etappe 0. Halte dich an die Haltepunkte und warte dort auf mein Okay.</code><button class="copy-btn" type="button" onclick="copyBlock('prompt-setup', this)">Kopieren</button></pre>
+<p>Das war der ganze Zauber. Den Rest erledigt Claude und stellt dir dabei ein paar Fragen.</p>
+<div class="callout mac-only" style="margin-bottom:0;">
+<p style="margin-bottom:0.4rem;"><strong>Ein Fenster wird sich hier melden, und das ist normal:</strong> „Der Befehl <em>git</em> erfordert die Command Line Developer Tools.“ Klick auf <strong>Installieren</strong> und arbeite ganz normal weiter. Die Installation läuft im Hintergrund und dauert ein paar Minuten.</p>
+<p style="margin-bottom:0;">Klick nicht auf Abbrechen, sonst kommt das Fenster immer wieder. Git ist eine kleine Hilfssoftware, die für Claude mitschreibt, welche Dateien sich verändert haben. Du siehst davon nie etwas.</p>
+</div>
+</div>
+<!--/TOOL-->
+
+<!--TOOL:app-->
+<div class="step">
+<h3>Git installieren</h3>
+<p>Git ist eine kleine Hilfssoftware, die im Hintergrund mitschreibt, welche Dateien sich ändern. Du siehst davon nichts, Claude braucht sie.</p>
+<ul>
+<li>Windows-Taste drücken, <code>PowerShell</code> eintippen, Enter.</li>
+<li>Diesen Befehl einfügen (Strg + V) und Enter drücken:</li>
+</ul>
+<pre id="git"><code>winget install --id Git.Git -e</code><button class="copy-btn" type="button" onclick="copyBlock('git', this)">Kopieren</button></pre>
+<ul>
+<li>Warte, bis die Installation durch ist, dann schließ das Fenster.</li>
+</ul>
+</div>
+
+<div class="step">
+<h3>Claude im Terminal einrichten</h3>
+<p>Das Terminal ist das Fenster für Textbefehle. Ein paar Dinge richtest du nur dort ein, zum Beispiel Zusatzprogramme (Plugins). Das machen wir einmal jetzt, danach brauchst du das Terminal kaum noch.</p>
+<ul>
+<li>Windows-Taste drücken, <code>PowerShell</code> eintippen, Enter. Ein neues Fenster, falls das alte noch offen ist.</li>
+<li><strong>Der Befehl für Windows.</strong> Kopier ihn, füg ihn ein (Strg + V) und drück Enter:</li>
+</ul>
+<pre id="cli-win"><code>irm https://claude.ai/install.ps1 | iex</code><button class="copy-btn" type="button" onclick="copyBlock('cli-win', this)">Kopieren</button></pre>
+<p>Die Installation dauert ein, zwei Minuten. Warte, bis wieder eine leere Zeile mit blinkendem Strich erscheint.</p>
+<div class="callout">
+<p><strong>Der wichtigste Moment in diesem Schritt:</strong> Am Ende steht oft ein Hinweis, dass ein Ordner <em>„not in your PATH“</em> ist. Dann braucht Windows den <strong>Pfad</strong> zu Claude. Kopier diese zwei Zeilen, füg sie ein und drück Enter. Ohne sie findet dein Rechner Claude im Terminal nicht, obwohl es installiert ist.</p>
+<pre id="cli-path"><code>$currentPath = [Environment]::GetEnvironmentVariable('PATH', 'User')
+[Environment]::SetEnvironmentVariable('PATH', "$currentPath;$env:USERPROFILE\.local\bin", 'User')</code><button class="copy-btn" type="button" onclick="copyBlock('cli-path', this)">Kopieren</button></pre>
+<p>Der Pfad, der damit eingetragen wird, lautet <code>C:\Users\DEINNAME\.local\bin</code>. Du musst nichts ändern, Windows setzt deinen Namen selbst ein.</p>
+</div>
+<ul>
+<li>Schließ PowerShell und öffne ein neues Fenster. Tipp <code>claude --version</code> und drück Enter. Erscheint eine Versionsnummer, hat alles geklappt. Steht dort ein Fehler, fehlt der Befehl aus dem Kasten.</li>
+<li>Tipp jetzt <code>claude</code> und drück Enter. Du bewegst dich mit den Pfeiltasten und bestätigst mit Enter:
+<ul>
+<li>Farbe: hell oder dunkel, ganz wie du magst</li>
+<li>Anmeldung: <strong>Claude account with subscription</strong>, der Browser öffnet sich kurz</li>
+<li>Ordner: <strong>Yes, I trust this folder</strong></li>
+</ul>
+</li>
+<li>Zum Schluss <code>/exit</code> eintippen und das Fenster schließen.</li>
+</ul>
+</div>
+
+<div class="step">
+<h3>Claude-App öffnen, Reiter „Code“</h3>
+<ul>
+<li>Öffne die Claude-App auf deinem Laptop und melde dich mit deinem eigenen Konto an.</li>
+<li>Wechsle oben auf den Reiter <strong>Code</strong>.</li>
+</ul>
+</div>
+
+<div class="step">
+<h3>Arbeitsordner anlegen und öffnen</h3>
+<ul>
+<li>Leg in deinen Dokumenten einen neuen Ordner mit dem Namen <strong>KI-System</strong> an.</li>
+<li>Starte im Reiter Code eine <strong>lokale Sitzung</strong> und wähl diesen Ordner aus.</li>
+<li>Fragt die App, ob du dem Ordner vertraust: <strong>Ja</strong>. Es ist dein eigener Ordner.</li>
+</ul>
+<div class="callout">
+<p><strong>Der Pfad zu deinem Ordner.</strong> Claude fragt später nach dem vollen Pfad und ermittelt ihn in Etappe 0 selbst. Du erkennst ihn so: Öffne den Ordner im Explorer und klick oben in die Adressleiste. Dort steht zum Beispiel <code>C:\Users\DEINNAME\Documents\KI-System</code> (bei dir kann <code>OneDrive</code> dazwischenstehen).</p>
+<p>Claude schreibt ihn mit Schrägstrichen: <code>C:/Users/DEINNAME/Documents/KI-System</code>. Das ist gewollt und funktioniert unter Windows genauso. Backslashes macht Claude in Einstellungsdateien nie.</p>
+</div>
+<div class="callout">
+<p><strong>Merksatz:</strong> Ab jetzt immer genau diesen Ordner öffnen. Dein Second Brain und Claudes Gedächtnis liegen darin. Wer jedes Mal woanders arbeitet, fängt jedes Mal bei null an.</p>
+</div>
+</div>
+
+<div class="step">
+<h3>Die Setup-Datei in den Ordner legen</h3>
+<ul>
+<li><a class="btn" href="setup-{{VORNAME}}.md" download>setup-{{VORNAME}}.md herunterladen</a></li>
+<li>Verschieb die Datei aus dem Downloads-Ordner in deinen Ordner <strong>KI-System</strong>.</li>
+<li>Zeigt der Klick die Datei nur im Browser an: Rechtsklick auf den Button, dann <strong>„Link speichern unter“</strong>.</li>
+<li>Hast du sie zweimal geladen, heißt die zweite <code>setup-{{VORNAME}} (1).md</code>. Lösch die ältere, damit nur eine im Ordner liegt.</li>
+</ul>
+<p>In dieser Datei steckt die komplette Bauanleitung für dein System. Claude arbeitet sie Schritt für Schritt ab, du beantwortest Fragen und gibst frei.</p>
+</div>
+
+<div class="step">
+<h3>Den Einzeiler abschicken</h3>
+<p>Schreib diesen Satz in das Eingabefeld der Sitzung und schick ihn ab:</p>
+<pre id="start"><code>Lies die Datei setup-{{VORNAME}}.md in diesem Ordner und arbeite sie der Reihe nach ab, beginnend mit Etappe 0. Halte dich an die Haltepunkte und warte dort auf mein Okay.</code><button class="copy-btn" type="button" onclick="copyBlock('start', this)">Kopieren</button></pre>
+<p>Das war der ganze Zauber. Den Rest erledigt Claude und stellt dir dabei ein paar Fragen.</p>
+</div>
+<!--/TOOL-->
+
+</div>
+
+<div class="tabu">
+<p style="margin-bottom:0.4rem;"><strong>Die eine harte Regel für die Session</strong></p>
+<p style="margin-bottom:0.6rem;">Irgendwann möchte Claude eine Datei außerhalb deines Ordners lesen. Dann erscheint einmalig eine Frage mit drei Knöpfen, auf Englisch.</p>
+<p style="margin-bottom:0.6rem;">Klick auf <strong>„Keep allowing“</strong> (weiterhin erlauben). Niemals auf <strong>„Block from now on“</strong> (ab jetzt blockieren).</p>
+<p style="margin-bottom:0;">Blockieren merkt sich das Programm dauerhaft. Danach kommt Claude in keiner Sitzung mehr an Dateien außerhalb deines Ordners heran, auch nicht an dein Handbuch. Rückgängig machen lässt sich das nur mit Viktors Hilfe. Das ist der einzige Klick in der ganzen Session, der bleibenden Schaden anrichtet.</p>
+</div>
+</section>
+
+
+<section>
+<h2 id="handbuch" data-nav="Dein Handbuch">{{N}} · Dein Handbuch: die CLAUDE.md</h2>
+<p>Das Handbuch ist die Datei <code>CLAUDE.md</code>. Claude liest sie bei jedem Start von selbst. Sie liegt im versteckten Ordner <code>.claude</code> in deinem Benutzerordner und gilt dadurch in jedem Ordner, in dem du arbeitest. Sie entsteht <strong>als Erstes</strong>, gleich nach der Bestandsaufnahme (Etappe 0b der Setup-Datei), und zwar aus zwei Quellen. Danach wächst sie mit dem Interview und mit dem Second Brain weiter:</p>
+<ul>
+<li><strong>Was schon feststeht:</strong> {{VORWISSEN_HANDBUCH}}</li>
+<li><strong>Dein Interview (Etappe 3):</strong> Claude liest zuerst die CLAUDE.md und fragt nur nach dem, was noch fehlt, höchstens fünf Fragen in einer einzigen Nachricht. Du darfst sie diktieren, die Nummern einfach mitsprechen. Danach ergänzt er die CLAUDE.md.</li>
+</ul>
+<table>
+<tr><th>Frage</th><th>Wofür</th></tr>
+<tr><td>1 · Welche Aufgaben kommen immer wieder, mindestens einmal im Monat?</td><td>Daraus entstehen deine Befehle und Vorlagen.</td></tr>
+<tr><td>2 · Wo verlierst du die meiste Zeit mit Suchen oder Wiederholen?</td><td>Daraus entstehen die Ablagen im Second Brain.</td></tr>
+<tr><td>3 · Was soll auf keinen Fall in dieses System?</td><td>Wird zu einer festen Regel im Handbuch.</td></tr>
+</table>
+
+<h3>Der Interviewprompt</h3>
+<p>Er steht in der Setup-Datei und läuft im Setup von selbst. Danach gibt es ihn als Befehl <code>/interview</code>, mit dem du das Handbuch jederzeit nachschärfst. Claude liest zuerst, was er schon über dich weiß, und fragt nur nach dem, was fehlt. Als Text sieht er so aus:</p>
+<pre id="interview"><code>Lies zuerst meine CLAUDE.md, mein Second Brain (Landkarte und Startseite) und dein Gedächtnis. Stell mir danach höchstens fünf Fragen zu dem, was dort noch fehlt, in einer einzigen nummerierten Nachricht. Frag nichts, was schon drinsteht. Wenn ich geantwortet habe, ergänze meine CLAUDE.md mit dem Edit-Werkzeug, ohne etwas zu überschreiben, und zeig mir kurz, was neu dazugekommen ist.</code><button class="copy-btn" type="button" onclick="copyBlock('interview', this)">Kopieren</button></pre>
+</section>
+
+
+<section>
+<h2 id="ordner" data-nav="Deine Ordner">{{N}} · Deine Ordner</h2>
+<p>Alles liegt in deinem Ordner KI-System. Das Setup legt an, was fehlt, und benennt nichts um, was schon da ist. Die Grundordnung ist PARA mit vier Bereichen, und das Setup legt <strong>alle vier</strong> an:</p>
+<table>
+<tr><th>Bereich</th><th>Wofür</th></tr>
+<tr><td><code>{{PROJEKTE}}/</code></td><td>Projekte mit einem Ende, je Projekt ein Unterordner mit einer <code>project.md</code> (Ziel, Stand, nächste Schritte).{{PROJEKT_ZUSATZ}}</td></tr>
+<tr><td><code>{{BEREICHE}}/</code></td><td>Bereiche, die dauerhaft laufen, je Bereich ein Unterordner mit einer <code>area.md</code>.{{BEREICH_ZUSATZ}}</td></tr>
+<tr><td><code>{{RESSOURCEN}}/</code></td><td>Material und Wissen. Darin liegt alles aus der Tabelle unten.</td></tr>
+<tr><td><code>{{ARCHIV}}/</code></td><td>Abgeschlossenes und Altes.</td></tr>
+</table>
+<p>Unter den Ressourcen entstehen diese Ordner:</p>
+<table>
+<tr><th>Ordner</th><th>Wofür</th></tr>
+<tr><td><code>raw/inbox/</code></td><td>Eingangskorb: Hier landet alles Neue, bevor es einsortiert wird.</td></tr>
+<tr><td><code>wissen/</code></td><td>Dein Second Brain. Die Schubladen darin entstehen aus deinem Interview.</td></tr>
+<tr><td><code>claude-output/</code></td><td>Alles, was Claude für dich baut, in einer eigenen Mappe je Stück.</td></tr>
+<tr><td><code>memory/</code></td><td>Claudes Gedächtnis. Dort kannst du nachlesen, was er sich gemerkt hat.</td></tr>
+</table>
+<p>Heißen deine Ordner schon anders, übernimmt das Setup deine Namen und legt nichts doppelt an.</p>
+</section>
+
+
+<section>
+<h2 id="etappen" data-nav="Was passiert">{{N}} · Was in der Session passiert</h2>
+<p>Claude arbeitet die Setup-Datei in sieben Etappen (0 bis 6, dazu 0b) ab und meldet nach jedem Teil kurz, was er getan hat. Er legt nichts doppelt an und benennt nichts um.</p>
+<table>
+<tr><th>Etappe</th><th>Was passiert</th></tr>
+<tr><td>0 · Bestandsaufnahme</td><td>Claude schaut, was im Ordner schon liegt, und ermittelt den Pfad. Hier kommt die Frage mit „Keep allowing“.</td></tr>
+<tr><td>0b · CLAUDE.md zuerst</td><td>Die CLAUDE.md entsteht aus dem, was schon feststeht, dazu das Projekt und der Bereich. Hier erscheint die Frage nach der Erlaubnis für den Claude-Ordner.</td></tr>
+<tr><td>1 · Second Brain</td><td>Eingangskorb, Wissensordner und Startseite entstehen.</td></tr>
+<tr><td>2 · Ordner</td><td>Ausgabe-Ordner für fertige Ergebnisse und die Einstellungen für Claude.</td></tr>
+<tr><td>3 · Interview</td><td>Der Interviewprompt aus Abschnitt 2. Danach schlägt Claude die Ablagen vor, du gibst frei.</td></tr>
+<tr><td>4 · Handbuch und Gedächtnis</td><td>Die CLAUDE.md wird mit Interview und Second Brain vervollständigt. Dazu stellt Claude sein Gedächtnis ein.</td></tr>
+<tr><td>5 · Befehle</td><td>Vier Alltagsbefehle: <code>/interview</code>, <code>/verarbeiten</code>, <code>/pruefung</code>, <code>/feierabend</code>.</td></tr>
+<tr><td>6 · Abschluss</td><td>Neustart, gemeinsame Kontrolle, monatliche Prüfung als Automation.</td></tr>
+</table>
+</section>
+
+
+<section>
+<h2 id="befehle" data-nav="Befehle und Prüfung">{{N}} · Befehle und die monatliche Prüfung</h2>
+<p>Diese Befehle brauchst du im Alltag. Die ausführliche Liste steht im Spicker unten.</p>
+<ul>
+<li><code>/interview</code> schärft dein Handbuch nach: Claude fragt nur nach dem, was noch fehlt.</li>
+<li><code>/verarbeiten</code> räumt den Eingangskorb ins Second Brain, etwa einmal pro Woche.</li>
+<li><code>/feierabend</code> schließt den Arbeitstag ab und macht ein Backup.</li>
+<li><code>/pruefung</code> prüft Second Brain und Gedächtnis auf Dubletten, tote Verweise und Veraltetes.</li>
+</ul>
+<div class="callout">
+<p><strong>Die Prüfung läuft als Automation.</strong> Claude richtet sie am Ende der Session von selbst ein, als geplante Aufgabe <code>monatspruefung</code>. Sie startet am 1. jedes Monats um 10 Uhr und führt <code>/pruefung</code> aus. Du musst nichts tun. Zwei Dinge gelten: Die Aufgabe läuft nur, wenn die Claude-App offen und der Rechner wach ist. Hast du den Termin verpasst, holt die App ihn beim nächsten Start nach. Die Prüfung stellt dir dann eine Frage und wartet auf deine Antwort, du findest sie in der App auf der Seite <strong>Scheduled</strong>.</p>
+</div>
+</section>
+
+
+<section>
+<h2 id="datenschutz" data-nav="Datenschutz">{{N}} · Datenschutz: die eine harte Regel</h2>
+<div class="warning">
+<p style="margin-bottom:0.4rem;"><strong>Keine Daten deiner Kundinnen und Kunden in Claude.</strong> Keine Namen, keine Anschriften, keine Geburtsdaten, keine Telefonnummern, keine Kontodaten.</p>
+<!-- PERSONALISIEREN:DATENSCHUTZ Heikle Daten ihrer Branche nennen. Beispiel Ernährungsberatung: „Gesundheitsangaben bleiben ganz draußen.“ Gewicht, Messwerte, Befunde und Diagnosen gehören zu den besonders geschützten Daten. Die kommen gar nicht ins System, auch nicht mit abgekürztem Namen, weil sich Menschen über solche Kombinationen wiedererkennen lassen. Gibt es nichts Besonderes, den ganzen Absatz löschen. Kommentar danach löschen. -->
+<p style="margin-bottom:0.4rem;"><strong>{{HEIKLE_DATEN_TITEL}}</strong> {{HEIKLE_DATEN_TEXT}}</p>
+<p style="margin-bottom:0;">Womit du stattdessen arbeitest: mit deinem Fachwissen, deinen eigenen Texten, deinen Vorlagen und erfundenen Beispielen. Die Qualität bleibt gleich, das Risiko verschwindet. Die Regel steht auch in deinem Handbuch, Claude erinnert dich also selbst daran.</p>
+</div>
+</section>
+
+<!--OPT:prompts-->
+<section>
+<h2 id="prompts" data-nav="Prompts für den Start">{{N}} · Prompts für den Start</h2>
+<p>Sechs Aufträge, die das nutzen, was nur Claude Code kann: deine Dateien lesen, dein Wissen mitdenken und fertige Dateien ablegen. Über jedem steht, was er dir bringt. Die Stellen in eckigen Klammern ersetzt du durch deine eigenen Angaben.</p>
+<p>Du musst dabei keine Ordnerpfade kennen. Claude weiß aus deinem Handbuch, wo dein Eingangskorb und dein Projekte-Ordner liegen.</p>
+
+<!-- PERSONALISIEREN:SPICKZETTEL Mindestens zwei der sechs Aufträge auf ihre echten Aufgaben aus dem Kundenprofil zuschneiden (Titel, Wofür-Zeile, Beispielangaben). Aufträge mit Sätzen gegen erfundene Zahlen und Versprechen behalten sie, zugeschnittene Aufträge, die Inhalte erzeugen, bekommen sie dazu. Kommentar danach löschen. -->
+<div class="pcase">
+<h4><span class="pnum">01</span>Aus Notizen eine fertige Unterlage für Teilnehmende</h4>
+<p class="nutzen"><b>Wofür:</b> Du hast Stichpunkte und alte Texte zu einem Thema. Daraus wird in einem Durchlauf eine saubere Unterlage zum Mitgeben.</p>
+<pre id="p1"><code>In meinem Eingangskorb liegen Notizen und Textschnipsel zu einem Thema aus meinem Angebot. Arbeite die Schritte der Reihe nach ab und zeig mir nach jedem kurz das Zwischenergebnis:
+
+1. Lies alles und sag mir, welche Themen darin vorkommen und was noch fehlt.
+2. Schlag mir eine Gliederung für eine Unterlage für Teilnehmende vor und warte auf mein Okay.
+3. Bau daraus eine fertige Unterlage als HTML-Datei, druckfertig auf A4, ruhig gestaltet, mit Merkkästen und freier Fläche für Notizen.
+4. Leg sie in meinem Projekte-Ordner unter unterlagen ab und öffne sie im Browser.
+
+Fachliche Aussagen nimmst du nur aus meinem Material. Erfinde keine Zahlen, Studien oder Versprechen, was jemand erreicht. Was du nicht belegen kannst, markierst du mit OFFENE FRAGE.</code><button class="copy-btn" type="button" onclick="copyBlock('p1', this)">Kopieren</button></pre>
+</div>
+
+<div class="pcase">
+<h4><span class="pnum">02</span>Ein Infoblatt für Interessierte</h4>
+<p class="nutzen"><b>Wofür:</b> Die Fragen, die du im Erstgespräch immer wieder beantwortest, liegen danach als Blatt da. Zum Mitgeben und zum Verschicken.</p>
+<pre id="p2"><code>Bau mir ein Infoblatt für Menschen, die sich für [Angebot eintragen] interessieren, als eine einzelne HTML-Datei auf einer Seite.
+
+1. Frag mich zuerst nach den fünf Fragen, die ich im Erstgespräch am häufigsten höre, und nach meinen Antworten darauf. Eine Frage pro Nachricht.
+2. Mach daraus: was dich erwartet, wie der Ablauf ist, was es kostet, die fünf häufigsten Fragen mit Antwort, Kontakt.
+3. Leg es in meinem Projekte-Ordner unter infoblaetter ab und öffne es im Browser.
+
+Erfinde keine Preise, Termine oder Ergebnisse. Was du nicht von mir hast, fragst du.</code><button class="copy-btn" type="button" onclick="copyBlock('p2', this)">Kopieren</button></pre>
+</div>
+
+<div class="pcase">
+<h4><span class="pnum">03</span>Aus einem Text ein ganzes Posting-Paket</h4>
+<p class="nutzen"><b>Wofür:</b> Ein guter Text von dir wird zu einer Woche Social Media. Alles landet als Dateien in einem Ordner, du kopierst nur noch raus.</p>
+<pre id="p3"><code>In meinem Eingangskorb liegt ein Text von mir. Mach daraus in einem Durchlauf:
+
+1. Drei kurze Instagram-Beiträge mit je einem Bildvorschlag.
+2. Einen längeren Beitrag für LinkedIn oder Facebook.
+3. Einen Absatz für einen Newsletter.
+
+Behalt meinen Ton und meine Formulierungen. Leg jedes Format als eigene Datei in meinem Projekte-Ordner unter content ab und zeig mir am Ende die Liste der Dateien. Keine erfundenen Zahlen, keine Versprechen, was jemand erreicht.</code><button class="copy-btn" type="button" onclick="copyBlock('p3', this)">Kopieren</button></pre>
+</div>
+
+<div class="pcase">
+<h4><span class="pnum">04</span>Eine Seite für ein Angebot</h4>
+<p class="nutzen"><b>Wofür:</b> Eine eigene Seite für einen Kurs oder ein Angebot, die du danach mit einem Satz selbst ändern kannst.</p>
+<pre id="p4"><code>Bau mir eine Seite für [Angebot eintragen] als eine einzelne HTML-Datei. Sie soll auf dem Handy genauso gut aussehen wie am Rechner.
+
+Der Aufbau: Überschrift und ein Satz, der den Nutzen benennt. Für wen das Angebot gedacht ist. Was drin steckt. Wie der Ablauf aussieht. Zwei bis drei Stimmen als Platzhalter, die ich später ersetze. Termin, Preis, ein Anmeldeknopf mit Platzhalter-Link.
+
+Inhalte nimmst du aus meinem Second Brain und fragst nach, was fehlt. Zeig mir erst die Gliederung und warte auf mein Okay, bevor du baust. Leg die fertige Datei in meinem Projekte-Ordner unter seiten ab.</code><button class="copy-btn" type="button" onclick="copyBlock('p4', this)">Kopieren</button></pre>
+</div>
+
+<div class="pcase">
+<h4><span class="pnum">05</span>Aus alten Texten eine Vorlage</h4>
+<p class="nutzen"><b>Wofür:</b> Deine besten Formulierungen stecken in alten Dateien. Daraus entsteht ein Gerüst mit Platzhaltern, und ab dem zweiten Mal sparst du die meiste Zeit.</p>
+<pre id="p5"><code>In meinem Eingangskorb liegen mehrere fertige Texte von mir aus der Vergangenheit (Ankündigungen, Beschreibungen, Einladungen). Zeig mir nach jedem Schritt das Zwischenergebnis:
+
+1. Lies alle und sag mir, welche Bausteine immer wiederkehren.
+2. Sag mir, welche Formulierungen stark sind und welche schwach, mit einem Halbsatz Begründung.
+3. Bau daraus eine Vorlage mit Platzhaltern in eckigen Klammern. Nimm dafür meine eigenen Formulierungen.
+4. Leg sie im passenden Bereich meines Second Brain ab und trag sie im Verzeichnis ein.</code><button class="copy-btn" type="button" onclick="copyBlock('p5', this)">Kopieren</button></pre>
+</div>
+
+<div class="pcase">
+<h4><span class="pnum">06</span>Bestandsaufnahme: was fehlt dir eigentlich?</h4>
+<p class="nutzen"><b>Wofür:</b> Statt zu raten, welches Material als Nächstes dran ist, siehst du schwarz auf weiß, was da ist und wo eine Lücke klafft.</p>
+<pre id="p6"><code>Ich will wissen, wie es um mein Material steht. Geh Schritt für Schritt vor und zeig mir nach jedem Schritt das Zwischenergebnis:
+
+1. Schau in meine Ordner und liste auf, welches Material zu welchem Angebot existiert (Unterlagen, Infoblätter, Texte für Website oder Social Media).
+2. Bau daraus eine Tabelle: Angebot in der einen Richtung, Materialart in der anderen. Vorhanden, veraltet oder fehlt.
+3. Was du nicht sicher beurteilen kannst, markierst du mit UNKLAR.
+4. Nenn mir die drei wichtigsten Lücken mit je einem Satz Begründung.
+
+Ändere nichts von allein, das ist eine reine Bestandsaufnahme.</code><button class="copy-btn" type="button" onclick="copyBlock('p6', this)">Kopieren</button></pre>
+</div>
+
+<h3>Wissen aufnehmen und wiederfinden</h3>
+<pre id="t1"><code>Nimm die ausdrücklich genannten Fakten und Entscheidungen aus dieser Unterhaltung in mein Second Brain auf. Zeig mir zuerst den Entwurf.</code><button class="copy-btn" type="button" onclick="copyBlock('t1', this)">Kopieren</button></pre>
+<pre id="t2"><code>/verarbeiten</code><button class="copy-btn" type="button" onclick="copyBlock('t2', this)">Kopieren</button></pre>
+<pre id="t3"><code>Was habe ich zum Thema [Thema] festgehalten? Antworte mit Quellen aus meinem Second Brain.</code><button class="copy-btn" type="button" onclick="copyBlock('t3', this)">Kopieren</button></pre>
+<pre id="t4"><code>Woran haben wir zuletzt gearbeitet, und was wäre der nächste Schritt? Sag mir auch, woher du das weißt.</code><button class="copy-btn" type="button" onclick="copyBlock('t4', this)">Kopieren</button></pre>
+</section>
+<!--/OPT-->
+
+<!--OPT:skills-->
+<section>
+<h2 id="skills" data-nav="Eigene Skills">{{N}} · Der nächste Schritt: eigene Skills</h2>
+<p>Das brauchst du am ersten Tag nicht. Es lohnt sich, wenn du ein paar Wochen gearbeitet hast und merkst, dass du Claude denselben Ablauf zum dritten Mal erklärst.</p>
+<p>Ein Skill ist eine Textdatei, in der ein Arbeitsablauf beschrieben steht: wann er gilt, welche Schritte kommen und was am Ende herauskommen soll. Einen Befehl rufst du selbst auf. Ein Skill erkennt an deiner Formulierung, dass er dran ist, und meldet sich von allein.</p>
+<ul>
+<li><strong>Erst von Hand.</strong> Mach die Aufgabe ein bis zwei Mal im Gespräch mit Claude, bis das Ergebnis wirklich gut ist.</li>
+<li><strong>Dann festhalten</strong>, mit dem Auftrag unten.</li>
+<li><strong>Dann testen.</strong> Neue Unterhaltung öffnen und die Aufgabe so formulieren, wie du es im Alltag tun würdest. Springt der Skill an? Wenn nicht, ist seine Beschreibung zu vage.</li>
+</ul>
+<pre id="s1"><code>Das, was wir gerade zusammen gemacht haben, brauche ich regelmäßig. Bau mir daraus einen Skill: einen Namen, eine Beschreibung, die konkret sagt, wann er greift (mit Formulierungen, wie ich sie wirklich schreiben würde), die Schritte in der richtigen Reihenfolge, die Dateien, die er dabei lesen soll, und was am Ende herauskommen soll. Halt ihn kurz und auf diese eine Aufgabe beschränkt. Leg ihn im globalen Skill-Ordner ab (~/.claude/skills/), damit er in jedem Ordner bereitsteht, und sag mir zum Schluss in zwei Sätzen, wie ich ihn auslöse.</code><button class="copy-btn" type="button" onclick="copyBlock('s1', this)">Kopieren</button></pre>
+<div class="tabu">
+<p style="margin-bottom:0.3rem;"><strong>Wichtig: keine fremden Skills installieren</strong></p>
+<p style="margin-bottom:0;">Ein Skill darf alles, was du auch darfst, also auch Dateien lesen und verschicken. Aus Sammelstellen im Netz sind Skills mit Schadfunktionen bekannt. Bau dir deine Skills selbst, so wie oben.</p>
+</div>
+</section>
+<!--/OPT-->
+
+<!--OPT:obsidian-->
+<section>
+<h2 id="obsidian" data-nav="Optional: Obsidian">{{N}} · Optional: Dein Wissen sichtbar machen</h2>
+<p>Dein System funktioniert auch ohne diesen Abschnitt. Er ist für dich, wenn du gern sehen möchtest, was in deinem Second Brain wächst. Das Programm dafür heißt Obsidian. Es ist kostenlos, speichert nichts in einer Cloud und ändert an deinen Dateien nichts.</p>
+
+<div class="callout">
+<p style="margin-bottom:0;"><strong>Obsidian ist wie eine Brille.</strong> Es liest dieselben Dateien, die Claude schreibt. Wenn du es morgen wieder löschst, ist kein Wissen weg.</p>
+</div>
+
+<div class="steps">
+
+<div class="step">
+<h3>Obsidian installieren</h3>
+<ul>
+<li>Download: <a href="https://obsidian.md/download" target="_blank" rel="noopener">obsidian.md/download</a>, <span class="win-only">dort die Windows-Datei (.exe) laden und ausführen.</span><span class="mac-only">dort die Mac-Datei (.dmg) laden, öffnen und Obsidian in den Ordner <strong>Programme</strong> ziehen. Danach gleich <strong>Im Dock behalten</strong>, wie bei VS Code.</span></li>
+<li>Obsidian startet meistens auf Englisch. Die Sprache stellst du in den Einstellungen um (Zahnrad unten links), je nach Version unter <strong>General</strong> oder <strong>About</strong> bei <strong>Language</strong>.</li>
+</ul>
+</div>
+
+<div class="step">
+<h3>Deinen Ordner öffnen</h3>
+<ul>
+<li>Beim ersten Start <strong>„Open folder as vault“</strong> wählen (Ordner als Vault öffnen).</li>
+<li>Den Ordner <strong>KI-System</strong> auswählen.</li>
+</ul>
+<div class="callout" style="margin-bottom:0;">
+<p style="margin-bottom:0;"><strong>Niemals „Create new vault“ klicken.</strong> Das legt einen neuen, leeren Ordner an, und dein vorhandenes Wissen bleibt unsichtbar.</p>
+</div>
+</div>
+
+<div class="step">
+<h3>Die Netzansicht öffnen</h3>
+<ul>
+<li><span class="win-only">Strg + G</span><span class="mac-only">Cmd + G</span> öffnet die Netzansicht (Graph). Jeder Punkt ist eine Datei, jede Linie ein Verweis.</li>
+<li>Am Anfang siehst du nur wenige Punkte, und das ist richtig so. Das Netz wächst mit jedem <code>/verarbeiten</code>.</li>
+<li>Mehrere Punkte heißen „index“. Das ist gewollt, jede Ablage hat ihr eigenes Verzeichnis.</li>
+<li>Doppelte eckige Klammern um ein Wort, also <code>[[Kursunterlage]]</code>, machen daraus einen Weg zu einer anderen Seite. Genau daraus entsteht das Netz.</li>
+</ul>
+</div>
+
+<div class="step">
+<h3>Jede Ablage bekommt eine Farbe</h3>
+<ul>
+<li>In der Netzansicht oben rechts auf das Zahnrad, dann <strong>Groups</strong> und <strong>New group</strong>.</li>
+<li>Je Ablage eine Gruppe mit einer Suchanfrage und einer Farbe. Die Suchanfragen schreibt dir Claude:</li>
+</ul>
+<pre id="o1"><code>Schreib mir für Obsidian je Ablage in meinem Second Brain eine Suchanfrage für die Farbgruppen in der Netzansicht, im Format path:"Ordner/Unterordner", mit den echten Ordnernamen. Nimm den Eingangskorb, Landkarte und Startseite und den Gedächtnis-Ordner memory als eigene Gruppen dazu, die Ablagen zuerst. Sag mir zu jeder Anfrage in einem Halbsatz, was sie einfärbt.</code><button class="copy-btn" type="button" onclick="copyBlock('o1', this)">Kopieren</button></pre>
+<ul>
+<li>Liegen viele einzelne Punkte ohne Verbindung herum: im Zahnrad unter <strong>Filters</strong> die <strong>Orphans</strong> (Waisen) ausblenden.</li>
+</ul>
+</div>
+
+</div>
+</section>
+<!--/OPT-->
+
+<section>
+<div class="spicker" id="spicker">
+<h2 data-nav="Dein Spicker" data-href="spicker">{{N}} · Dein Spicker</h2>
+<p>Eine Seite für den Alltag: wie du Claude für dein Geschäft einsetzt und welche Befehle du wirklich brauchst.</p>
+
+<h3>So setzt du Claude für dich ein</h3>
+<ul>
+<li><strong>Immer im Ordner KI-System starten.</strong> Dann kennt Claude dein Handbuch, dein Second Brain und deine Regeln.</li>
+<li><strong>Sag, was am Ende rauskommen soll.</strong> Zum Beispiel „Schreib mir {{SPICKER_BEISPIELSATZ}} als Datei“ statt „Hilf mir dabei“.</li>
+<li><strong>Ein Auftrag nach dem anderen.</strong> Kurz, konkret, so wie du es einem Mitarbeiter sagen würdest.</li>
+<li><strong>Claude erledigt es, du klickst nur, wo es nicht anders geht.</strong> Das steht auch in deinem Handbuch.</li>
+<li><strong>Fakten erfindet Claude nicht.</strong> Fehlt etwas, fragt er dich. Neues Fachwissen legst du mit <code>/verarbeiten</code> ins Second Brain.</li>
+</ul>
+
+<h3>{{SPICKER_TITEL}}</h3>
+<p>Das sind Vorschläge zum Ausprobieren. Pass sie an deine echten Aufgaben an.</p>
+<table>
+<tr><th>Du willst</th><th>Du schreibst</th></tr>
+{{SPICKER_ZEILEN}}
+</table>
+
+<h3>Die wichtigsten Befehle</h3>
+<table>
+<tr><th>Befehl</th><th>Wofür</th><th>Wann</th></tr>
+<tr><td><code>/interview</code></td><td>Schärft dein Handbuch (CLAUDE.md) nach, Claude fragt nur nach Fehlendem.</td><td>Wenn sich bei dir etwas ändert</td></tr>
+<tr><td><code>/verarbeiten</code></td><td>Räumt den Eingangskorb ins Second Brain und überträgt Sachwissen aus Claudes Gedächtnis.</td><td>Etwa einmal pro Woche</td></tr>
+<tr><td><code>/pruefung</code></td><td>Gesundheitscheck für Second Brain und Gedächtnis.</td><td>Monatlich automatisch, bei Bedarf von Hand</td></tr>
+<tr><td><code>/feierabend</code></td><td>Tagesabschluss: legt Fertiges ab, fragt, was ins Second Brain gehört, macht ein Backup. Rund fünf Minuten.</td><td>Am Ende des Arbeitstags</td></tr>
+<tr><td><code>/clear</code></td><td>Neue, leere Unterhaltung. Handbuch und Second Brain bleiben erhalten.</td><td>Bei einem neuen Thema</td></tr>
+<tr><td><code>/memory</code></td><td>Zeigt, was sich Claude gemerkt hat.</td><td>Wenn du es wissen willst</td></tr>
+<tr><td><code>/exit</code></td><td>Beendet die Sitzung.</td><td>Zum Schluss</td></tr>
+</table>
+
+<h3>Drei Handgriffe</h3>
+<ul>
+<li><strong>Stoppen:</strong> Taste <code>Esc</code> drücken, wenn Claude in die falsche Richtung läuft.</li>
+<li><strong>Nachfragen:</strong> „Erklär mir das bitte so, als hätte ich das noch nie gemacht.“</li>
+<li><strong>Ideen festhalten:</strong> Was dir unterwegs einfällt, legst du als Datei in den Eingangskorb. <code>/verarbeiten</code> sortiert es später ein.</li>
+</ul>
+</div>
+</section>
+
+
+<section>
+<h2 id="hilfe" data-nav="Wenn etwas hakt">{{N}} · Wenn etwas hakt</h2>
+
+<!--TOOL:code-->
+<div class="tabu">
+<p style="margin-bottom:0.3rem;"><strong>Das Claude-Symbol (✱) fehlt in der linken Leiste</strong></p>
+<p style="margin-bottom:0;">VS Code einmal komplett beenden und neu starten. Prüf unter Erweiterungen, ob Claude Code von Anthropic wirklich installiert ist. Anderer Weg: <span class="win-only">Strg + Umschalt + P</span><span class="mac-only">Cmd + Umschalt + P</span> drücken, „Claude Code“ eintippen und den Öffnen-Befehl auswählen.</p>
+</div>
+<!--/TOOL-->
+
+<div class="tabu">
+<p style="margin-bottom:0.3rem;"><strong>Die Anmeldung klappt nicht</strong></p>
+<p style="margin-bottom:0;">Prüf, ob du im Browser mit deinem eigenen Konto auf claude.ai eingeloggt bist und ob es einen Bezahlplan hat. Mit welchem Konto und welchem Plan Claude gerade arbeitet, zeigt dir der Befehl <code>/usage</code> in der Sitzung.</p>
+</div>
+
+<div class="tabu">
+<p style="margin-bottom:0.3rem;"><strong>Claude findet die setup-{{VORNAME}}.md nicht</strong></p>
+<p style="margin-bottom:0;">Fast immer ist der falsche Ordner geöffnet oder die Datei liegt noch im Downloads-Ordner. Prüf, ob die Sitzung im Ordner KI-System läuft und die Datei dort liegt.</p>
+</div>
+
+<div class="tabu">
+<p style="margin-bottom:0.3rem;"><strong>Es erscheint „Blocked by classifier“</strong></p>
+<p style="margin-bottom:0;">Claude darf gerade nicht in einen geschützten Ordner schreiben. Klick unten im Eingabefeld auf die Modus-Anzeige und wähl <strong>Manual</strong>. Beim nächsten Versuch kommt eine Rückfrage, die du bestätigst, bei einem Dialog mit mehreren Knöpfen auf <strong>„Yes, and allow Claude to edit its own settings for this session“</strong>. Danach darfst du die Anzeige wieder auf Auto stellen.</p>
+</div>
+
+<div class="tabu">
+<p style="margin-bottom:0.3rem;"><strong>Ein Befehl wie /interview oder /feierabend wird nicht erkannt</strong></p>
+<p style="margin-bottom:0;">Die Befehle waren beim Anlegen noch nicht geladen. Starte eine neue Unterhaltung. Hilft das nicht, beende Claude ganz und öffne ihn neu. Kommt die Meldung dann immer noch, frag Claude: „Liegen die vier Befehle interview, verarbeiten, pruefung und feierabend im Ordner commands?“</p>
+</div>
+
+<div class="tabu">
+<p style="margin-bottom:0.3rem;"><strong>Im Terminal heißt es, claude sei nicht bekannt</strong></p>
+<p style="margin-bottom:0;">Claude ist installiert, dein Rechner findet es nur noch nicht. Führ den Befehl aus dem Kasten im Schritt „Claude im Terminal einrichten“ aus (der mit „PATH“), schließ das Terminal und öffne ein neues. Dann noch einmal <code>claude --version</code>.</p>
+</div>
+
+<!--TOOL:code-->
+<div class="tabu">
+<p style="margin-bottom:0.3rem;"><strong>Ein Zusatzprogramm (Plugin) lässt sich nicht installieren</strong></p>
+<p style="margin-bottom:0;">Prüf zuerst, ob du den Terminal-Schritt ganz durchgeklickt hast, bis zur Frage nach dem Ordner. Meldet Claude danach, der Marktplatz „claude-plugins-official“ fehle, tipp im Terminal <code>claude plugin marketplace add anthropics/claude-plugins-official</code> und versuch es noch einmal.</p>
+</div>
+
+<div class="tabu mac-only">
+<p style="margin-bottom:0.3rem;"><strong>Ein Fenster verlangt immer wieder die „Command Line Developer Tools“</strong></p>
+<p style="margin-bottom:0;">Das ist die Git-Meldung aus dem Einzeiler-Schritt. Sie kommt so lange wieder, bis du sie einmal durchlässt. Klick auf <strong>Installieren</strong> und arbeite normal weiter.</p>
+</div>
+
+<div class="tabu mac-only">
+<p style="margin-bottom:0.3rem;"><strong>Ich finde VS Code nicht mehr</strong></p>
+<p style="margin-bottom:0;">Finder öffnen, links unter Favoriten auf <strong>Programme</strong>, dann in der Liste zu Visual Studio Code. Damit das nicht wieder passiert: Rechtsklick auf das Symbol im Dock, <strong>Optionen &gt; Im Dock behalten</strong>.</p>
+</div>
+<!--/TOOL-->
+
+<div class="tabu">
+<p style="margin-bottom:0.3rem;"><strong>Claude findet eine Datei nicht, die ich doch abgelegt habe</strong></p>
+<p style="margin-bottom:0;">Fast immer fehlt die Ortsangabe. Nenn den Ordner mit: „Die Datei liegt im Ordner <em>Projekte &gt; Kurse</em>.“ Wenn Claude trotzdem lossucht: unten auf das <strong>Stopp-Symbol</strong> klicken und den Satz mit der Ortsangabe neu schicken.</p>
+</div>
+
+<div class="tabu">
+<p style="margin-bottom:0.3rem;"><strong>Claude weiß nichts mehr über mich</strong></p>
+<p style="margin-bottom:0;">Frag direkt: „Was weißt du über mich und meine Arbeit?“ Kommt keine Antwort aus deinem Handbuch, wurde es nicht geladen. Dann hilft <code>/interview</code> oder ein Blick in die Datei <code>CLAUDE.md</code> im Ordner <code>.claude</code> deines Benutzerordners.</p>
+</div>
+
+<p style="margin-top:1.2rem;">Und wenn nichts davon hilft: Screenshot machen und an Viktor schicken, kontakt@lehrconsult.de.</p>
+</section>
+
+
+<section>
+<h2>Ein letztes Wort</h2>
+<p>Du musst hier nichts vorbereiten und nichts perfekt machen. Wir bauen alles gemeinsam in der Session auf, und diese Seite bleibt danach als Nachschlagewerk für dich online.</p>
+<p>Was danach zählt, ist eine einzige Gewohnheit: Wenn etwas dauerhaft ins Fachwissen gehört, sag ausdrücklich „Nimm das in mein Second Brain auf“. Was Claude sich nebenbei merkt, holt <code>/verarbeiten</code> aus dem Gedächtnis ins Second Brain. Alles andere bleibt dort, wo es fachlich hingehört.</p>
+
+<div class="signature">
+<span class="name">Viktor Lehr</span> · LehrConsult
+</div>
+</section>
+
+<div class="notice">
+<strong>© 2026 Viktor Lehr · LehrConsult. Alle Rechte vorbehalten.</strong>
+Dieses Dokument einschließlich aller Texte, Grafiken, Tabellen, Prompts und des Layouts ist urheberrechtlich geschützt. Die Weitergabe, Vervielfältigung, Veröffentlichung, Bearbeitung oder anderweitige Verbreitung, ganz oder in Teilen, digital oder gedruckt, ist ohne ausdrückliche schriftliche Zustimmung von Viktor Lehr nicht gestattet (§§ 15 ff. UrhG).
+Die Nutzung ist ausschließlich für persönliche Zwecke im Rahmen des gebuchten Setup-Session gestattet. Verstöße können zivilrechtliche Konsequenzen nach sich ziehen, insbesondere Unterlassungs- und Schadensersatzansprüche gemäß § 97 UrhG.
+Kontakt für Lizenzanfragen: kontakt@lehrconsult.de
+</div>
+
+<footer>
+Begleitmaterial zum Setup-Session · Bitte nicht weitergeben · Stand {{STAND}} · lehrconsult.de
+</footer>
+
+</div>
+</div>
+
+
+<script>
+(function () {
+  var KEY = '{{VORNAME}}-handout-auth';
+  var PW = '{{PASSWORT}}';
+  var navReady = false;
+  function unlock() { document.body.classList.add('unlocked'); initSideNav(); }
+
+  function initSideNav() {
+    if (navReady) return;
+    navReady = true;
+    var links = Array.prototype.slice.call(document.querySelectorAll('#sidenav a'));
+    if (!links.length || !('IntersectionObserver' in window)) return;
+    var items = [];
+    links.forEach(function (a) {
+      var head = document.getElementById(a.getAttribute('href').slice(1));
+      if (!head) return;
+      var box = head.closest('section') || head;
+      items.push({ link: a, box: box, visible: false });
+    });
+    if (!items.length) return;
+    function paint() {
+      var current = null;
+      for (var i = 0; i < items.length; i++) { if (items[i].visible) { current = items[i]; break; } }
+      if (!current) {
+        for (var j = 0; j < items.length; j++) {
+          if (items[j].box.getBoundingClientRect().top < window.innerHeight * 0.4) current = items[j];
+        }
+      }
+      links.forEach(function (a) { a.classList.remove('active'); });
+      if (current) current.link.classList.add('active');
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        for (var i = 0; i < items.length; i++) {
+          if (items[i].box === e.target) { items[i].visible = e.isIntersecting; break; }
+        }
+      });
+      paint();
+    }, { rootMargin: '-12% 0px -75% 0px' });
+    items.forEach(function (it) { io.observe(it.box); });
+    paint();
+    window.addEventListener('scroll', paint, { passive: true });
+  }
+
+  try {
+    if (localStorage.getItem(KEY) === 'ok' || sessionStorage.getItem(KEY) === 'ok') unlock();
+  } catch (e) {}
+
+  function tryPw() {
+    var input = document.getElementById('gate-pw');
+    var err = document.getElementById('gate-error');
+    if (input.value.trim().toLowerCase() === PW) {
+      try { localStorage.setItem(KEY, 'ok'); sessionStorage.setItem(KEY, 'ok'); } catch (e) {}
+      unlock();
+    } else {
+      err.textContent = 'Das Passwort stimmt nicht. Bitte prüfe die Einladung.';
+      input.value = '';
+      input.focus();
+    }
+  }
+  document.getElementById('gate-btn').addEventListener('click', tryPw);
+  document.getElementById('gate-pw').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') tryPw();
+  });
+})();
+
+function setOS(os) {
+  document.body.classList.remove('os-win', 'os-mac');
+  document.body.classList.add(os === 'mac' ? 'os-mac' : 'os-win');
+}
+/*OSAUTO*/try {
+  var isMac = /Mac|iPhone|iPad/.test(navigator.platform || '') || /Macintosh/.test(navigator.userAgent || '');
+  setOS(isMac ? 'mac' : 'win');
+} catch (e) {}/*/OSAUTO*/
+
+function copyBlock(id, btn) {
+  var text = document.querySelector('#' + id + ' code').innerText;
+  function done() {
+    var old = btn.textContent;
+    btn.textContent = 'Kopiert!';
+    setTimeout(function () { btn.textContent = old; }, 1600);
+  }
+  function fallback() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(fallback);
+  } else { fallback(); }
+}
+</script>
+</body>
+</html>
